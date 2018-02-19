@@ -1,0 +1,9 @@
+{
+  "name": "TeamApp1",
+  "version": "0.0.0",
+  "authors": [
+    "kardotjs <carlosing10@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true
+}
