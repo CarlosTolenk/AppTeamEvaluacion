@@ -1,12 +1,13 @@
-	
+//Asigando todas las rutas desde Express por medio de app
+// Haciendo modular nuestras rutas
 
-module.exports = function(app){
+module.exports = (app) => {
 
-	app.get('/partials/*', function(req, res) {
+	app.get('/partials/*', (req, res) => {
 	  	res.render('../../public/app/' + req.params['0']);
 	});
 
-	app.get('*', function(req, res) {
+	app.get('*', (req, res) => {
 	  	res.render('index');
 	});
 };

@@ -18,12 +18,13 @@
   "author": "CTolenk",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/CarlosTolenk/TeamApp/issues"
+    "url": "https://github.com/CarlosTolenk/AppTeamEvaluacion/issues"
   },
   "dependencies": {
-    "body-parser": "^1.10.2",
-    "express": "^4.11.1",
-    "morgan": "^1.5.1",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "mongoose": "^5.0.6",
+    "morgan": "^1.9.0",
     "swig": "^1.4.2"
   }
 }

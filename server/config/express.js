@@ -14,7 +14,7 @@ module.exports = (app, config) => {
 
 	//Para no cachear HTML en el entorno de desarrollo
 	app.set('view cache', false);
-	//No cacheamos el HTML
+	//No cacheamos el HTML y le damos el control a Angular para que pueda renderizar las vistas
 	swig.setDefaults({ cache: false, varControl: ['{^','^}']});
 
 
