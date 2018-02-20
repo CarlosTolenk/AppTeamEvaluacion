@@ -1,8 +1,8 @@
 {
-  "name": "TeamApp1",
-  "version": "0.0.0",
+  "name": "TeamApp",
+  "version": "1.0.0",
   "authors": [
-    "kardotjs <carlosing10@gmail.com>"
+    "CTolenk <carlos.tolentinoe@gmail.com>"
   ],
   "license": "MIT",
   "private": true
