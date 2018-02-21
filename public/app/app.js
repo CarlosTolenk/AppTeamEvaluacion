@@ -25,6 +25,11 @@ app.config(['$stateProvider',"$urlRouterProvider", function($stateProvider, $url
 				url : '/recursos',
 				templateUrl : 'partials/recursos/templates/recursos.html'
 			})
+			.state('registro',{
+				url : '/registro',
+				templateUrl : 'partials/sign/templates/registro.html',
+				controller : 'registroCtrl'
+			})
 
 
 }]);
