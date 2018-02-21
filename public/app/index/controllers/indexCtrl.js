@@ -2,10 +2,10 @@ var app = angular.module('Teamapp');
 
 app.controller('indexCtrl', function($rootScope,$state, $scope, Session){
 
+
+//Definiendo los modulos
 	function Modulo(state){
-
 		this.state = state.name;
-
 		this.name = state.name.split('.')[1];
 
 		this.getName = function(){
@@ -18,10 +18,12 @@ app.controller('indexCtrl', function($rootScope,$state, $scope, Session){
 
 	$scope.modulo = new Modulo($state.current).getName();
 
+//Aplicar el logout, por medio de session
 	$scope.logout = function(){
 		Session.logOut()
 		.then(function(response){
 			if (response.data.destroy) {
+				//Destruirla y redireccionar hacia el login.html
 				$state.go('login');
 			}
 		});

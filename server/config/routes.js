@@ -1,8 +1,9 @@
-var usuarios = require('../controllers/usuarios');	
+const usuarios = require('../controllers/usuarios');
 
-module.exports = function(app){
+module.exports = (app) => {
 
-	app.get('/partials/*', function(req, res) {
+// Dar acceso a Angular para pueda enrutar
+	app.get('/partials/*', (req, res) => {
 	  	res.render('../../public/app/' + req.params['0']);
 	});
 

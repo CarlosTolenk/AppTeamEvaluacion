@@ -1,13 +1,15 @@
-var Usuario = require('../models/usuarios');
-var passport = require('../config/passport');
+const Usuario = require('../models/usuarios');
+const passport = require('../config/passport');
 
-exports.registro = function(req, res, next){
-	var usuario = new Usuario(req.body);
-	usuario.save(function (err, usuario){
+
+// Haciendo el registro del usuario y guandandolo en el MongoDB por medio del Schema
+exports.registro = (req, res, next) => {
+	let usuario = new Usuario(req.body);
+	usuario.save((err, usuario) => {
 		if (err) {
 			res.send({success : false, message : err});
 		}else{
-			req.logIn(usuario, function (err){
+			req.logIn(usuario, (err) => {
 				if (!err) {
 					res.send({logged: true, success: true, usuario : req.session.passport});
 				}else{
@@ -20,9 +22,9 @@ exports.registro = function(req, res, next){
 
 };
 
-
-exports.login =	function (req, res, next){
-	var auth = passport.authenticate('local', function (err, user){
+//Aplicando el login, por medio de passport donde por medio del Schema y revisando si hay un usuario registrado
+exports.login =	 (req, res, next) => {
+	let auth = passport.authenticate('local', (err, user) => {
 		if (err) {
 			console.log(err);
 			return next(err);
@@ -31,7 +33,7 @@ exports.login =	function (req, res, next){
 			console.log("No hay usuario!");
 			res.send({success : false});
 		}
-		req.logIn(user, function (err){
+		req.logIn(user, (err) => {
 			if (err) {
 				console.log("Error al loguearse!");
 				return next(err)
@@ -42,7 +44,8 @@ exports.login =	function (req, res, next){
 	auth(req, res, next);
 };
 
-exports.userAuthenticated = function(req, res, next){
+// Verificando si el usuario esta loguado
+exports.userAuthenticated = (req, res, next) => {
 	if (req.isAuthenticated()) {
 		res.send({user : req.session.passport, isLogged : true});
 	}else{
@@ -50,9 +53,9 @@ exports.userAuthenticated = function(req, res, next){
 	}
 };
 
-
-exports.logout = function(req, res, next){
-	req.session.destroy(function(err){
+// Verificando si el usuario esta loguado para poder destruir esa session
+exports.logout = (req, res, next) => {
+	req.session.destroy((err) => {
 		console.log("Logout");
 		if (!err) {
 			res.send({destroy : true});
