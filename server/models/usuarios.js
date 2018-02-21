@@ -5,7 +5,7 @@ let usuariosSchema = new Schema({
 	nombre : String,
 	nombre_usuario : String,
 	password : String,
-	twitter : String
+	twitter : Schema.Types.Mixed
 });
 
 //Metodo para verificar si el password es correcto

@@ -1,5 +1,5 @@
 const usuarios = require('../controllers/usuarios');
-
+const passport = require('./passport');
 module.exports = (app) => {
 
 // Dar acceso a Angular para pueda enrutar
@@ -14,6 +14,14 @@ module.exports = (app) => {
 	app.post('/logout', usuarios.logout);
 
 	app.get('/session', usuarios.userAuthenticated);
+
+	app.get('/auth/twitter', passport.authenticate('twitter'));
+
+	app.get('/auth/twitter/callback', passport.authenticate('twitter',
+	{
+		successRedirect: '/',
+		failureRedirect: '/login'
+	}));
 
 	app.get('*', function(req, res) {
 	  	res.render('index');
