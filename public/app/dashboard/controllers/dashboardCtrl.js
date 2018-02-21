@@ -1,4 +1,4 @@
-angular.module('Teamapp').controller('dashboardCtrl', function( $scope, Session){
-
-
+angular.module('Teamapp').controller('dashboardCtrl', function($scope, Session){
+	
+	
 });

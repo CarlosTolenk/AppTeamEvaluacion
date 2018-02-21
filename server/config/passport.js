@@ -1,32 +1,35 @@
-const passport = require('passport');
-LocalStrategy = require('passport-local').Strategy;
-const Usuario = require('../models/usuarios');
+var passport = require('passport'),
+	LocalStrategy = require('passport-local').Strategy;;
+var Usuario = require('../models/usuarios');
 
-passport.serializeUser((user, done) => {
-    if(user){
-      done(null, user);
-    }
+passport.serializeUser(function (user, done){
+	if (user) {
+		done(null, user);
+	}
 });
 
-passport.deserializeUser((user, done) => {
-    Usuario.findOne({_id:user._id})
-      .exec((err, user) => {
-        if(user){
+passport.deserializeUser(function (user, done){
+	Usuario.findOne({_id : user._id})
+	.exec(function (err, user){
+		if(user) {
           return done(null, user);
-        }else{
+        } else {
           return done(null, false);
         }
-      });
+	});
 });
-passport.use('local', new LocalStrategy(
-  (username, password, done) => {
-    Usuario.findOne({ nombre_usuario: username })
-      .exec((err, user) => {
-          if( user && user.Authenticate(password)){
-              return done(null, user)
-          }else{
-              return done(null, false)
-          }
-      })
-  }));
+
+passport.use('local',new LocalStrategy(
+	function(username, password, done){
+		Usuario.findOne({nombre_usuario : username})
+		.exec(function (err, user){
+			if (user && user.authenticate(password)) {
+				return done(null, user)
+			}else{
+				return done(null, false)
+			}
+		})
+	}
+));
+
 module.exports = passport;
