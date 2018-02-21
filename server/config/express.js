@@ -27,7 +27,9 @@ module.exports = (app, config) => {
 	app.use(bodyParser());
 
 	// Configurando Redis y Passport
-	app.use(session({store : new redisStore({}), secret : 'teamapp next'}));
+	app.use(session({store : new redisStore({
+		 disableTTL: true
+	 }), secret : 'teamapp next'}));
 	app.use(passport.initialize());
 	app.use(passport.session());
 

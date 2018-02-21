@@ -8,5 +8,11 @@ let usuariosSchema = new Schema({
     twitter : String
   });
 
+  usuariosSchema.methods = {
+    authenticate : (password) => {
+      return this.password == password;
+    }
+  }
+
 let Usuario = models.model('Usuario', usuariosSchema, 'usuarios');
 module.exports = Usuario;
