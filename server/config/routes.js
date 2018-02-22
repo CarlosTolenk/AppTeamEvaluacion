@@ -35,6 +35,10 @@ module.exports = (app) => {
 
 	app.post('/recurso', multiparty, recursos.guardar_recurso);
 
+	app.get('/recursos/recibidos', recursos.getRecursosRecibidos);
+
+	app.get('/recursos/enviados', recursos.getRecursosEnviados);
+
 	app.get('*', function(req, res) {
 	  	res.render('index');
 	});

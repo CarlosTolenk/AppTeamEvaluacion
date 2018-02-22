@@ -1,9 +1,11 @@
-angular.module('Teamapp').controller('recursosCtrl', function($scope, $http, $state, ToastService, RecursosService){
+var app = angular.module('Teamapp');
+
+app.controller('recursosCtrl', function($scope, $http, $state, ToastService, RecursosService){
 	$scope.filesChanged = function(elm){
         $scope.files = elm.files;
 		$scope.$apply();
 	}
-   
+
 	$scope.uploadFile = function(){
 		var fd = new FormData();
 		angular.forEach($scope.files, function (file){
@@ -11,8 +13,8 @@ angular.module('Teamapp').controller('recursosCtrl', function($scope, $http, $st
 		});
 		fd.append('destinatarios',$scope.destinatarios);
 		fd.append('asunto',$scope.asunto);
-        
-        $http.post('/recurso', fd, 
+
+        $http.post('/recurso', fd,
         {
         	transformRequest:angular.identity,
         	headers : {'Content-Type' : undefined}
@@ -23,11 +25,23 @@ angular.module('Teamapp').controller('recursosCtrl', function($scope, $http, $st
         	$state.transitionTo('app.recursos');
         });
     };
+});
 
-    /*RecursosService.getRecursosRecibidos()
+
+app.controller('enviadosCtrl', function($scope,RecursosService){
+
+    RecursosService.getRecursosEnviados()
     .success(function (response){
-    	$scope.recursos = response;
-    	console.log($scope.recursos);
-    });*/
+        console.log(response);
+        $scope.enviados = response;
+    });
+});
 
+
+app.controller('recibidosCtrl', function($scope,RecursosService){
+
+    RecursosService.getRecursosRecibidos()
+    .success(function (response){
+        $scope.recibidos = response;
+    });
 });

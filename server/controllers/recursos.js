@@ -40,6 +40,30 @@ exports.guardar_recurso = (req, res, next) => {
 	});
 };
 
+exports.getRecursosRecibidos = (req, res, next) => {
+  Recurso.find({destinatarios: req.session.passport.user.nombre_usuario})
+    .populate('remitente')
+    .exec((err, recursos) => {
+      if(err){
+        console.log(err);
+      }else{
+        res.send(recursos);
+      }
+    });
+};
+
+exports.getRecursosEnviados = (req, res, next) =>{
+  console.log('Recursos Enviados');
+  Recurso.find({remitente: req.session.passport.user._id})
+    .populate('remitente')
+    .exec((err, recursos) => {
+      if(err){
+        console.log(err);
+      }else{
+        res.send(recursos);
+      }
+    });
+};
 
 
 function guardar_archivos(req, res, i, file){
