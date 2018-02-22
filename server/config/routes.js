@@ -39,6 +39,8 @@ module.exports = (app) => {
 
 	app.get('/recursos/enviados', recursos.getRecursosEnviados);
 
+	app.get('/recurso/:id_recurso', recursos.getDetalleRecurso);
+
 	app.get('*', function(req, res) {
 	  	res.render('index');
 	});

@@ -65,6 +65,19 @@ exports.getRecursosEnviados = (req, res, next) =>{
     });
 };
 
+exports.getDetalleRecurso = (req, res, next) => {
+	console.log(req.params.id_recurso, "Detalle");
+	Recurso.findOne({_id: req.params.id_recurso})
+		.populate('remitente')
+			.exec((err, recurso) => {
+				if(!err){
+					res.send(recurso);
+				}else{
+					console.log(recurso);
+				}
+		});
+};
+
 
 function guardar_archivos(req, res, i, file){
 	let root = path.dirname(require.main.filename);
