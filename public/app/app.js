@@ -25,7 +25,13 @@ app.config(['$stateProvider',"$urlRouterProvider", function($stateProvider, $url
 		})
 		.state('app.recursos',{
 			url : '/recursos',
-			templateUrl : 'partials/recursos/templates/recursos.html'
+			templateUrl : 'partials/recursos/templates/recursos.html',
+			controller : 'recursosCtrl'
+		})
+		.state('app.recursos.crear', {
+			url : '/crear',
+			templateUrl : 'partials/recursos/templates/crear.html',
+			controller : 'recursosCtrl'
 		})
 		.state('registro',{
 			url : '/registro',

@@ -1,6 +1,8 @@
 const usuarios = require('../controllers/usuarios');
 const tareas = require('../controllers/tareas');
+const recursos = require('../controllers/recursos');
 const passport = require('./passport');
+const multiparty = require('connect-multiparty');
 
 module.exports = (app) => {
 
@@ -30,6 +32,8 @@ module.exports = (app) => {
 	app.get('/tareas', tareas.getTareas);
 
 	app.post('/tareas/finalizadas', tareas.guardarFinalizadas);
+
+	app.post('/recurso', multiparty, recursos.guardar_recurso);
 
 	app.get('*', function(req, res) {
 	  	res.render('index');

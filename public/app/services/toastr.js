@@ -1,4 +1,4 @@
-angular.module('Teamapp').service('toastF', function (toastr){
+angular.module('Teamapp').service('ToastService', function (toastr){
 
 	this.success = function(msg){
 		toastr.success(msg);

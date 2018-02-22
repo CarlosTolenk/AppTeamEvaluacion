@@ -21,7 +21,9 @@
     "url": "https://github.com/CarlosTolenk/AppTeamEvaluacion/issues"
   },
   "dependencies": {
+    "async": "^2.6.0",
     "body-parser": "^1.18.2",
+    "connect-multiparty": "^2.1.0",
     "connect-redis": "^3.3.3",
     "cookie-parser": "^1.4.3",
     "express": "^4.16.2",
