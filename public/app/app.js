@@ -28,6 +28,7 @@ app.config(['$stateProvider',"$urlRouterProvider", function($stateProvider, $url
 			templateUrl : 'partials/recursos/templates/recursos.html',
 			controller : 'recursosCtrl'
 		})
+
 		.state('app.recursos.crear', {
 			url : '/crear',
 			templateUrl : 'partials/recursos/templates/crear.html',

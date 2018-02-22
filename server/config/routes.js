@@ -2,7 +2,7 @@ const usuarios = require('../controllers/usuarios');
 const tareas = require('../controllers/tareas');
 const recursos = require('../controllers/recursos');
 const passport = require('./passport');
-const multiparty = require('connect-multiparty');
+const multiparty = require('connect-multiparty')();
 
 module.exports = (app) => {
 

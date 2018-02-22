@@ -1,5 +1,6 @@
-//Creacion de los servicios para iniciar y destruir la sessiones
 angular.module('Teamapp').factory('Session', function($http, $state, $rootScope){
+
+	
 
 	function Usuario(){
 
@@ -15,13 +16,13 @@ angular.module('Teamapp').factory('Session', function($http, $state, $rootScope)
 			return $http.post('/logout');
 		}
 
-		this.isLogged = function(usuario){
+		this.isLogged = function(usuario){	
 			return $http.get('/session');
 		}
 
 	}
 
-	var Usuario = new Usuario();
+	var Usuario = new Usuario();	
 
 	var Session = {
 		logIn : Usuario.logIn,
@@ -29,7 +30,7 @@ angular.module('Teamapp').factory('Session', function($http, $state, $rootScope)
 		logOut : Usuario.logOut,
 		isLogged : Usuario.isLogged
 	}
-
+	
 	Usuario.getUsuario();
 	Usuario.isLogged();
 	return Session;

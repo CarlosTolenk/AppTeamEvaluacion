@@ -3,16 +3,16 @@ angular.module('Teamapp').controller('recursosCtrl', function($scope, $http, $st
         $scope.files = elm.files;
 		$scope.$apply();
 	}
-
-	$scope.uploadFile = function(){    
+   
+	$scope.uploadFile = function(){
 		var fd = new FormData();
 		angular.forEach($scope.files, function (file){
-			fd.append('files',file);
+			fd.append('file',file);
 		});
 		fd.append('destinatarios',$scope.destinatarios);
 		fd.append('asunto',$scope.asunto);
-
-        $http.post('/recurso', fd,
+        
+        $http.post('/recurso', fd, 
         {
         	transformRequest:angular.identity,
         	headers : {'Content-Type' : undefined}

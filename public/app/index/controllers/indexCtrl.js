@@ -2,28 +2,26 @@ var app = angular.module('Teamapp');
 
 app.controller('indexCtrl', function($rootScope,$state, $scope, Session){
 
-
-//Definiendo los modulos
 	function Modulo(state){
+
 		this.state = state.name;
+
 		this.name = state.name.split('.')[1];
 
 		this.getName = function(){
 			return this.name && this.name[0].toUpperCase() + this.name.slice(1);
 		};
 	}
-
+	
+	$scope.modulo = new Modulo($state.current).getName();
+	
 
 	/////////*********Scopes********//////////
 
-	$scope.modulo = new Modulo($state.current).getName();
-
-//Aplicar el logout, por medio de session
 	$scope.logout = function(){
 		Session.logOut()
 		.then(function(response){
 			if (response.data.destroy) {
-				//Destruirla y redireccionar hacia el login.html
 				$state.go('login');
 			}
 		});
@@ -48,4 +46,7 @@ app.controller('indexCtrl', function($rootScope,$state, $scope, Session){
 	$rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){
 		$scope.modulo = new Modulo(toState).getName();
 	});
-});
+});	
+
+
+

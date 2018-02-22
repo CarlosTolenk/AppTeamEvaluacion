@@ -9,20 +9,26 @@
                 <form ng-submit="guardar()">
                     <div class="form-group">
                         <div class="col-xs-3">
+
                             <input name="descripcion" ng-model="item.descripcion" type="text" class="form-control" placeholder="Descripción">
                         </div>
+
                         <div class="col-xs-3">
+
                             <button type="submit" class="btn btn-primary pull-left" ><i class="fa fa-check"></i> Crear</button>
                         </div>
                     </div>
+
                 </form>
 
                 <br>
                 <br>
                 <ul class="todo-list" style="overflow:auto;height:200px;">
                     <li ng-repeat="tarea in tareas">
-                        <input type="checkbox" ng-model="tarea.finalizada.estado" value="{{tarea.finalizada.estado}}"/>
+
+                        <input type="checkbox" ng-model="tarea.finalizada.estado" value="{{tarea.finalizada.estado}}" />
                         <span class="text">{{tarea.descripcion}}</span>
+
                     </li>
                 </ul>
             </div>
@@ -33,28 +39,31 @@
     </div>
 </div>
 
-<div class="box">
-  <div class="box-header">
-    <h3 class="box-title">Historial de Tareas Finalizadas</h3>
-  </div>
-  <div class="box-body no-padding">
-    <div class="callout callout-danger" ng-show="!tareas_finalzadas.length">
-      <h4>Aún no haz finalizado estas Tareas</h4>
-      <p>Aqui mostramos tu Historial de Tareas Finalizadas</p>
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">Historial de tareas finalizadas</h3>
+        </div>
+        <div class="box-body no-padding">
+            <div class="callout callout-danger" ng-show="!tareas_finalizadas.length">
+                <h4>Aún no has finalizado tareas!</h4>
+                <p>Aquí mostraremos tu historial de tareas finalizadas.</p>
+            </div>
+            <table class="table table-condensed" ng-hide="!tareas_finalizadas.length">
+                <tbody>
+                <tr>
+                    <th>Descripcion</th>
+                    <th>Fecha</th>
+                    <th style="width: 40px">Estado</th>
+                </tr>
+
+                <tr ng-repeat="finalizada in tareas_finalizadas">
+                    <td>{{finalizada.descripcion }}</td>
+                    <td>
+                        {{finalizada.finalizada.fecha | date:'yyyy-MM-dd' }}
+                    </td>
+                    <td><span class="badge bg-green">Finalizada</span></td>
+                </tr>
+
+            </tbody></table>
+        </div>
     </div>
-    <table class="table table-condensed" ng-hide="!tareas_finalzadas.length">
-      <tbody>
-        <tr>
-          <th>Descripción</th>
-          <th>Fecha</th>
-          <th style="width:40px">Estado</th>
-        </tr>
-        <tr ng-repeat="finalizada in tareas_finalzadas">
-          <td>{{finalizada.descripcion}}</td>
-          <td>{{finalizada.finalizada.fecha | date: 'yyyy-MMM-dd'}}</td>
-          <td> <span class="badge bg-green">Finalizada</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
