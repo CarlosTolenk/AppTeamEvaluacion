@@ -20,7 +20,8 @@ app.config(['$stateProvider',"$urlRouterProvider", function($stateProvider, $url
 		})
 		.state('app.tareas',{
 			url : '/tareas',
-			templateUrl : 'partials/tareas/templates/tareas.html'
+			templateUrl : 'partials/tareas/templates/tareas.html',
+			controller : 'tareasCtrl'
 		})
 		.state('app.recursos',{
 			url : '/recursos',

@@ -1,5 +1,7 @@
 const usuarios = require('../controllers/usuarios');
+const tareas = require('../controllers/tareas');
 const passport = require('./passport');
+
 module.exports = (app) => {
 
 // Dar acceso a Angular para pueda enrutar
@@ -22,6 +24,12 @@ module.exports = (app) => {
 		successRedirect: '/',
 		failureRedirect: '/login'
 	}));
+
+	app.post('/tareas', tareas.guardar);
+
+	app.get('/tareas', tareas.getTareas);
+
+	app.post('/tarea/finalizadas', tareas.guardarFinalizadas);
 
 	app.get('*', function(req, res) {
 	  	res.render('index');
