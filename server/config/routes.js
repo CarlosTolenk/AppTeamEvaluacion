@@ -29,7 +29,7 @@ module.exports = (app) => {
 
 	app.get('/tareas', tareas.getTareas);
 
-	app.post('/tarea/finalizadas', tareas.guardarFinalizadas);
+	app.post('/tareas/finalizadas', tareas.guardarFinalizadas);
 
 	app.get('*', function(req, res) {
 	  	res.render('index');

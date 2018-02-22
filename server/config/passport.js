@@ -38,8 +38,8 @@ passport.use('local', new LocalStrategy(
 
 passport.use(new TwitterStrategy(
 	{
-	consumerKey : '4xxOxkK24TFIVm2kfHpcxmKb9',
-	consumerSecret :'yQnofH5x1Ph0b8iFrA7n4gF8ByghEdGq0HKgdh0yg5QzdLc3AV',
+	consumerKey : 'thjdWeXT4As7C7bu2ag08HwUp',
+	consumerSecret :'l5Wrbx02Tl3CrbOAW31716skmDXxgWQNk8AcAfnamEmMZojSer',
 	callbackURL : 'http://127.0.0.1:3000/auth/twitter/callback'
  },
 
