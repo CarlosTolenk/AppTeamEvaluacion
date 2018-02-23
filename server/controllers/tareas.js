@@ -43,7 +43,9 @@ exports.guardarFinalizadas = (req, res, next) => {
             tarea.finalizada.fecha = new Date();
             tarea.save();
           });
-          res.send(tareas);
+          req.body.tareas = tareas;
+         //res.send(tareas);
+          next();
         }
       });
 };

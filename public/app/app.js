@@ -28,26 +28,31 @@ app.config(['$stateProvider',"$urlRouterProvider", function($stateProvider, $url
 			templateUrl : 'partials/recursos/templates/recursos.html',
 			controller : 'recursosCtrl'
 		})
+
 		.state('app.recursos.crear', {
 			url : '/crear',
 			templateUrl : 'partials/recursos/templates/crear.html',
 			controller : 'recursosCtrl'
 		})
-		.state('app.recursos.enviados',{
+
+		.state('app.recursos.enviados', {
 			url : '/enviados',
 			templateUrl : 'partials/recursos/templates/enviados.html',
 			controller : 'enviadosCtrl'
 		})
-		.state('app.recursos.recibidos',{
+
+		.state('app.recursos.recibidos', {
 			url : '/recibidos',
 			templateUrl : 'partials/recursos/templates/recibidos.html',
 			controller : 'recibidosCtrl'
 		})
+
 		.state('app.recursos.detalle',{
 			url : '/:id_recurso',
 			templateUrl : 'partials/recursos/templates/detalle.html',
 			controller : 'detalleCtrl'
 		})
+
 		.state('registro',{
 			url : '/registro',
 			templateUrl : 'partials/sign/templates/registro.html',

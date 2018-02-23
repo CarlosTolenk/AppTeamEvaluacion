@@ -1,107 +1,120 @@
-const Recurso = require('../models/recursos');
-const ObjectId = require('mongoose').Types.ObjectId;
+var Recurso = require('../models/recursos');
+var ObjectId = require('mongoose').Types.ObjectId;
 
-const fs = require('fs');
-const _ = require('lodash');
-const path = require('path');
-const async = require('async');
+var fs = require('fs');
+var _ = require('lodash');
+var path = require('path');
+var async = require('async');
 
-let newRecurso = new Recurso({});
+var newRecurso = new Recurso({});
 
-exports.guardar_recurso = (req, res, next) => {
+exports.guardarRecurso = function(req, res, next){
 	async.series({
 		archivos : function(callback){
-			if (req.files.file.length > 0) {
-				let result = _.map(req.files.file, (file, i) => {
-					return guardar_archivos(req, res, i, file);;
-				});
-				//newRecurso.archivos = result;
-				callback(null, result);
+			if (req.files.hasOwnProperty('files')) {
+				console.log(req.files);
+				if (req.files.file.length > 0) {
+					var result = _.map(req.files.file, function(file, i){
+						return guardar_archivos(req, res, i, file);;
+					});
+					callback(null, result);
+				}else{
+					callback(null, guardar_archivos(req, res, 0, req.files.file));
+				}
 			}else{
-				//newRecurso.archivos.push();
-				callback(null, guardar_archivos(req, res, 0, req.files.file));
+				callback(null, []);
 			}
 		},
 		datos : function(callback){
-			let data = {remitente : ObjectId(req.session.passport.user._id.toString()), destinatarios : req.body.destinatarios.split(','), asunto : req.body.asunto};
+			var data = {remitente : ObjectId(req.session.passport.user._id.toString()), destinatarios : req.body.destinatarios.split(','), asunto : req.body.asunto};
 			callback(null, data);
 		}
-	},  (err, result) => {
+	}, function (err, result){
 
 		if (!err) {
-			guardar_recurso(result, (recurso) => {
-				res.send(recurso);
+			guardar_recurso(result, function(recurso){
+
+				Recurso.populate(recurso, {path : 'remitente', model : 'Usuario', select : 'nombre nombre_usuario'}, function(err, recurso){
+					req.body.recurso = recurso;
+					res.send(recurso);
+					next();
+				});
 			});
 		}else{
 			res.send({msj : "Falló"});
 			console.log(err);
 		}
-
 	});
 };
 
-exports.getRecursosRecibidos = (req, res, next) => {
-  Recurso.find({destinatarios: req.session.passport.user.nombre_usuario})
-    .populate('remitente')
-    .exec((err, recursos) => {
-      if(err){
-        console.log(err);
-      }else{
-        res.send(recursos);
-      }
-    });
+exports.getRecursosRecibidos = function(req, res, next){
+	Recurso.find({destinatarios : req.session.passport.user.nombre_usuario})
+	.populate('remitente')
+	.exec(function (err, recursos){
+		if (err) {
+			console.log(err);
+		}else{
+			res.send(recursos);
+			//console.log(recursos);
+		}
+	});
 };
 
-exports.getRecursosEnviados = (req, res, next) =>{
-  console.log('Recursos Enviados');
-  Recurso.find({remitente: req.session.passport.user._id})
-    .populate('remitente')
-    .exec((err, recursos) => {
-      if(err){
-        console.log(err);
-      }else{
-        res.send(recursos);
-      }
-    });
+exports.getRecursosEnviados = function(req, res, next){
+	Recurso.find({remitente : req.session.passport.user._id})
+	.populate('remitente')
+	.exec(function (err, recursos){
+		if (err) {
+			console.log(err);
+		}else{
+			res.send(recursos);
+			//console.log(recursos);
+		}
+	});
 };
 
-exports.getDetalleRecurso = (req, res, next) => {
+
+exports.getDetalleRecurso = function(req, res, next){
 	console.log(req.params.id_recurso, "Detalle");
-	Recurso.findOne({_id: req.params.id_recurso})
-		.populate('remitente')
-			.exec((err, recurso) => {
-				if(!err){
-					res.send(recurso);
-				}else{
-					console.log(recurso);
-				}
-		});
+	Recurso.findOne({_id : req.params.id_recurso})
+	.populate('remitente')
+	.exec(function (err, recurso){
+		if (!err) {
+			res.send(recurso);
+		}else{
+			console.log(recurso);
+		}
+	});
 };
+
+
+/////////**********Funciones**********//////////////
+
 
 
 function guardar_archivos(req, res, i, file){
-	let root = path.dirname(require.main.filename);
-	let originalFilename = file.originalFilename.split('.')
-	let ext = originalFilename[originalFilename.length - 1];
-	let nombre_archivo = newRecurso._id.toString()+'_'+i+'.'+ext;
-	let newPath = root + '/public/recursos/'+nombre_archivo;
-	let newFile = new fs.createWriteStream(newPath);
-	let oldFile = new fs.createReadStream(file.path);
-	let bytes_totales = req.headers['content-length'];
-	let bytes_subidos = 0;
+	var root = path.dirname(require.main.filename);
+	var originalFilename = file.originalFilename.split('.')
+	var ext = originalFilename[originalFilename.length - 1];
+	var nombre_archivo = newRecurso._id.toString()+'_'+i+'.'+ext;
+	var newPath = root + '/public/recursos/'+nombre_archivo;
+	var newFile = new fs.createWriteStream(newPath);
+	var oldFile = new fs.createReadStream(file.path);
+	var bytes_totales = req.headers['content-length'];
+	var bytes_subidos = 0;
 
 	oldFile.pipe(newFile);
 
-	oldFile.on('data',  (chunk) => {
+	oldFile.on('data', function (chunk){
 
 		bytes_subidos += chunk.length;
-		let progreso = (bytes_subidos / bytes_totales) * 100;
+		var progreso = (bytes_subidos / bytes_totales) * 100;
 		//console.log("progress: "+parseInt(progreso, 10) + '%\n');
 		res.write("progress: "+parseInt(progreso, 10) + '%\n');
 
 	});
 
-	oldFile.on('end', () => {
+	oldFile.on('end', function(){
 		console.log('Carga completa!');
 		res.end('Carga completa!');
 	});

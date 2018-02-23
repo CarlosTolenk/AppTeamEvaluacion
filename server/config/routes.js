@@ -1,7 +1,11 @@
+//Requerir todos los controladores
 const usuarios = require('../controllers/usuarios');
 const tareas = require('../controllers/tareas');
 const recursos = require('../controllers/recursos');
+const timeline = require('../controllers/timeline');
+
 const passport = require('./passport');
+//Modulo para pasar los archivos de los recursos desde un formulario
 const multiparty = require('connect-multiparty')();
 
 module.exports = (app) => {
@@ -31,15 +35,17 @@ module.exports = (app) => {
 
 	app.get('/tareas', tareas.getTareas);
 
-	app.post('/tareas/finalizadas', tareas.guardarFinalizadas);
+	app.post('/tareas/finalizadas', tareas.guardarFinalizadas, timeline.tareaFinalizada);
 
-	app.post('/recurso', multiparty, recursos.guardar_recurso);
+	app.post('/recurso', multiparty, recursos.guardarRecurso, timeline.recursoEnviado);
 
 	app.get('/recursos/recibidos', recursos.getRecursosRecibidos);
 
 	app.get('/recursos/enviados', recursos.getRecursosEnviados);
 
 	app.get('/recurso/:id_recurso', recursos.getDetalleRecurso);
+
+	app.get('/timeline', timeline.getTimeline);
 
 	app.get('*', function(req, res) {
 	  	res.render('index');

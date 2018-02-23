@@ -13,6 +13,7 @@ const config = {
 //Le enviamos a Express y las rutas el app y el config que contiene la ruta raiz
 require('./server/config/express')(app, config);
 require('./server/config/routes')(app);
+require('./server/config/socket')(server);
 
 // Ponemos a escuchar al servidor para subirlo
 server.listen(PORT, () => {
