@@ -1,7 +1,22 @@
 var app = angular.module('Teamapp',['ui.router', 'ngAnimate', 'toastr']);
 
-app.config(['$stateProvider',"$urlRouterProvider", function($stateProvider, $urlRouterProvider){
-	$urlRouterProvider.otherwise('/app/dashboard');
+app.config(['$stateProvider',"$urlRouterProvider", "$locationProvider", "$urlMatcherFactoryProvider", function($stateProvider, $urlRouterProvider, $locationProvider, $urlMatcherFactoryProvider){
+	$urlRouterProvider.otherwise('/login');
+	$locationProvider.html5Mode(true);
+	/*$urlRouterProvider.rule(function ($injector, $location) {
+	    var path = $location.url();
+
+	    // check to see if the path already has a slash where it should be
+	    if (path[path.length - 1] === '/' || path.indexOf('/?') > -1) {
+	        return;
+	    }
+
+	    if (path.indexOf('?') > -1) {
+	        return path.replace('?', '/?');
+	    }
+
+	    return path + '/';
+	});*/
 
 	$stateProvider
 		.state('app',{
@@ -16,7 +31,18 @@ app.config(['$stateProvider',"$urlRouterProvider", function($stateProvider, $url
 		})
 		.state('app.chat',{
 			url : '/chat',
-			templateUrl : 'partials/chat/templates/chat.html'
+			templateUrl : 'partials/chat/templates/chat.html',
+			controller : 'chatCtrl'	
+		})
+		.state('app.chat.general',{
+			url : '/general',
+			templateUrl : 'partials/chat/templates/general.html',
+			controller : 'chatCtrl'	
+		})
+		.state('app.chat.individual',{
+			url : '/:id_chat',
+			templateUrl : 'partials/chat/templates/individual.html',
+			controller : 'chatCtrl'
 		})
 		.state('app.tareas',{
 			url : '/tareas',

@@ -12,7 +12,7 @@ exports.guardarRecurso = function(req, res, next){
 	async.series({
 		archivos : function(callback){
 			if (req.files.hasOwnProperty('files')) {
-				console.log(req.files);
+				console.log(req.files);	
 				if (req.files.file.length > 0) {
 					var result = _.map(req.files.file, function(file, i){
 						return guardar_archivos(req, res, i, file);;
@@ -30,20 +30,22 @@ exports.guardarRecurso = function(req, res, next){
 			callback(null, data);
 		}
 	}, function (err, result){
-
+		
 		if (!err) {
 			guardar_recurso(result, function(recurso){
-
+				
 				Recurso.populate(recurso, {path : 'remitente', model : 'Usuario', select : 'nombre nombre_usuario'}, function(err, recurso){
 					req.body.recurso = recurso;
 					res.send(recurso);
 					next();
 				});
+				
 			});
 		}else{
 			res.send({msj : "Falló"});
 			console.log(err);
 		}
+		
 	});
 };
 
@@ -106,12 +108,12 @@ function guardar_archivos(req, res, i, file){
 	oldFile.pipe(newFile);
 
 	oldFile.on('data', function (chunk){
-
+		
 		bytes_subidos += chunk.length;
 		var progreso = (bytes_subidos / bytes_totales) * 100;
 		//console.log("progress: "+parseInt(progreso, 10) + '%\n');
 		res.write("progress: "+parseInt(progreso, 10) + '%\n');
-
+		
 	});
 
 	oldFile.on('end', function(){

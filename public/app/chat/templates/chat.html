@@ -13,18 +13,13 @@
 					<div style="margin-top: 15px;">
 						<ul class="nav nav-pills nav-stacked" style="overflow:auto;height:300px;">
 							<li class="header">Equipo</li>
-							<li><a href="#"><i class="fa fa-group zz"></i> General</a></li>
+							<li ui-sref-active="active"><a ng-click="goToChat('general')" href="javascript:void(0);"><i class="fa fa-group zz"></i> General</a></li>
 
-							<li>
-								<a href="#">
+							<li ui-sref-active="active" ng-repeat="usuario in usuarios_conectados">
+								<!--a ui-sref="app.chat.individual({ id_usuario : '{{usuario._id}}' })"-->
+								<a ng-click="goToChat(usuario._id)" href="javascript:void(0);">
 									<i class="fa fa-circle text-success"></i> 
-									Susano José
-								</a>
-							</li>
-							<li>
-								<a href="#">
-									<i class="fa fa-circle text-success"></i> 
-									Andrés Pimienta
+									{{usuario.nick}}
 								</a>
 							</li>
 						</ul>

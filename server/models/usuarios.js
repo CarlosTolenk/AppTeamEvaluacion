@@ -1,14 +1,13 @@
-const models = require('./models'),
+var models = require('./models'),
 	Schema = models.Schema;
 
-let usuariosSchema = new Schema({
+var usuariosSchema = new Schema({
 	nombre : String,
 	nombre_usuario : String,
 	password : String,
 	twitter : Schema.Types.Mixed
 });
 
-//Metodo para verificar si el password es correcto
 usuariosSchema.methods = {
 	authenticate : function(password){
 		return this.password == password;
@@ -16,6 +15,6 @@ usuariosSchema.methods = {
 }
 
 
-let Usuario = models.model('Usuario', usuariosSchema, 'usuarios');
+var Usuario = models.model('Usuario', usuariosSchema, 'usuarios');
 
 module.exports = Usuario;

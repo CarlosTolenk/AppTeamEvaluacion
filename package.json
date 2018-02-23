@@ -1,5 +1,5 @@
 {
-  "name": "TeamApp1",
+  "name": "TeamApp",
   "version": "1.0.0",
   "description": "Una aplicacion para trabajo coperativo donde puedes asignar tareas, compartir recursos con un chat incorporado",
   "main": "server.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/CarlosTolenk/TeamApp.git"
+    "url": "git+ssh://git@github.com:CarlosTolenk/AppTeamEvaluacion.git"
   },
   "keywords": [
     "task",

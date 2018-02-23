@@ -1,17 +1,14 @@
-//Requerir todos los controladores
-const usuarios = require('../controllers/usuarios');
-const tareas = require('../controllers/tareas');
-const recursos = require('../controllers/recursos');
-const timeline = require('../controllers/timeline');
+var usuarios = require('../controllers/usuarios');	
+var tareas = require('../controllers/tareas');
+var recursos = require('../controllers/recursos');
+var timeline = require('../controllers/timeline');
+var chat = require('../controllers/chat');
+var passport = require('./passport');
+var multiparty = require('connect-multiparty')();
 
-const passport = require('./passport');
-//Modulo para pasar los archivos de los recursos desde un formulario
-const multiparty = require('connect-multiparty')();
+module.exports = function(app){
 
-module.exports = (app) => {
-
-// Dar acceso a Angular para pueda enrutar
-	app.get('/partials/*', (req, res) => {
+	app.get('/partials/*', function(req, res) {
 	  	res.render('../../public/app/' + req.params['0']);
 	});
 
@@ -23,19 +20,17 @@ module.exports = (app) => {
 
 	app.get('/session', usuarios.userAuthenticated);
 
-	app.get('/auth/twitter', passport.authenticate('twitter'));
+	app.get('/auth/twitter',passport.authenticate('twitter'));
 
-	app.get('/auth/twitter/callback', passport.authenticate('twitter',
-	{
-		successRedirect: '/',
-		failureRedirect: '/login'
-	}));
+	app.get('/auth/twitter/callback', passport.authenticate('twitter', { successRedirect: '/',failureRedirect: '/login' }));
 
 	app.post('/tareas', tareas.guardar);
 
 	app.get('/tareas', tareas.getTareas);
 
 	app.post('/tareas/finalizadas', tareas.guardarFinalizadas, timeline.tareaFinalizada);
+
+	app.post('/conversacion', chat.crear_dar_conversacion);
 
 	app.post('/recurso', multiparty, recursos.guardarRecurso, timeline.recursoEnviado);
 
@@ -46,6 +41,12 @@ module.exports = (app) => {
 	app.get('/recurso/:id_recurso', recursos.getDetalleRecurso);
 
 	app.get('/timeline', timeline.getTimeline);
+	
+	app.post('/mensaje', chat.enviar_mensaje);
+
+	app.get('/mensajes/general', chat.get_mensajes_generales);
+
+	app.get('/mensajes/:id_chat', chat.get_mensajes_individuales);
 
 	app.get('*', function(req, res) {
 	  	res.render('index');
