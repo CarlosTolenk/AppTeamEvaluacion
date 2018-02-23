@@ -1,7 +1,7 @@
-var models = require('./models'),
+const models = require('./models'),
 	Schema = models.Schema;
 
-var chatSchema = new Schema({
+let chatSchema = new Schema({
 	remitente : {type : Schema.Types.ObjectId, ref : 'Usuario'},
 	destinatario : {type : Schema.Types.ObjectId, ref : 'Usuario'},
 	tipo : String,
@@ -12,6 +12,6 @@ var chatSchema = new Schema({
 	}]
 });
 
-var Chat = models.model('Chat',chatSchema, 'chats');
+let Chat = models.model('Chat',chatSchema, 'chats');
 
 module.exports = Chat;

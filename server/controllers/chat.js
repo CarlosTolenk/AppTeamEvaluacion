@@ -1,10 +1,13 @@
-var Chat = require('../models/chat');
-var Usuario = require('../models/usuarios');
-var ObjectId = require('mongoose').Types.ObjectId;
-var async = require('async');
-var _ = require('lodash');
+// Requerir los modelos de la base de dato para poder manipularlo con el controller
+const Chat = require('../models/chat');
+const Usuario = require('../models/usuarios');
+// Para asociar Schema por medio del id
+const ObjectId = require('mongoose').Types.ObjectId;
+// Requerir modulos necesarios
+const async = require('async');
+const _ = require('lodash');
 
-exports.crear_dar_conversacion = function(req, res, next){
+exports.crear_dar_conversacion = (req, res, next) =>{
 
 	if (req.body.destinatario !== "general") {
 
@@ -20,7 +23,7 @@ exports.crear_dar_conversacion = function(req, res, next){
 			},
 			function(chat,callback){
 				if (chat) {
-					
+
 					var data = whoIsMe(req.session.passport.user, chat);
 					callback(null,data);
 				}else{
@@ -30,39 +33,37 @@ exports.crear_dar_conversacion = function(req, res, next){
 						tipo : 'individual'
 					});
 
-					chat.save(function(err, chat){
+					chat.save((err, chat) => {
 						if (!err) {
 							async.waterfall([
-								function(cb){
-									Chat.populate(chat, {path : 'destinatario', model : 'Usuario'}, function(err, r1){	
+								(cb) => {
+									Chat.populate(chat, {path : 'destinatario', model : 'Usuario'}, (err, r1) => {
 										cb(null, r1);
 									});
 								},
-								function(r1, cb){
-									Chat.populate(r1, {path : 'remitente', model : 'Usuario'}, function(err, r2){	
+								(r1, cb) => {
+									Chat.populate(r1, {path : 'remitente', model : 'Usuario'}, (err, r2) => {
 										cb(null, r2);
 									});
 								}
-							], function(err, results){
-									
+							], (err, results) => {
 									var data = whoIsMe(req.session.passport.user, results);
 									callback(null,data);
-								
 							});
 						}
 					});
 				}
 				//callback(null, chat);
 			}
-		], function(err, results){
+		], (err, results) => {
 			res.send(results);
 		});
 	}else{
 		async.waterfall([
 			function(callback){
 				Chat.findOne({tipo : 'general'})
-				.exec(function (err, chat){
-					
+				.exec((err, chat) => {
+
 					callback(null,chat);
 				});
 			},
@@ -73,37 +74,37 @@ exports.crear_dar_conversacion = function(req, res, next){
 					var chat = new Chat({
 						tipo : 'general'
 					});
-					chat.save(function(err, chat){
+					chat.save((err, chat) => {
 
 						callback(null,chat);
 					});
 				}
 				//callback(null, chat);
 			}
-		], function(err, results){
+		], (err, results) => {
 			res.send({ chat : results});
 		});
 	}
-		
+
 };
 
-exports.enviar_mensaje = function(req, res, next){
-	
+exports.enviar_mensaje = (req, res, next) => {
+
 
 	if (req.body.tipo == "individual") {
 
 		Chat.findOne({_id : req.body.chat},{mensajes : {$slice : 0} })
-		.exec(function (err,chat){
+		.exec((err,chat) => {
 			if (!err) {
 				var datos = {contenido : req.body.contenido, destinatario : req.body.destinatario._id, remitente : req.session.passport.user._id};
-				
+
 				chat.mensajes.push(datos);
-				chat.save(function (err, chat){
-					if (!err) {		
+				chat.save((err, chat) => {
+					if (!err) {
 
 						async.waterfall([
 							function(callback){
-								Usuario.populate(chat, {path : 'mensajes.remitente'}, function (err, r1){
+								Usuario.populate(chat, {path : 'mensajes.remitente'},  (err, r1) => {
 									if (err) {
 										console.log("Error populate remitente: "+err);
 									}else{
@@ -113,7 +114,7 @@ exports.enviar_mensaje = function(req, res, next){
 								});
 							},
 							function(r1, callback){
-								Usuario.populate(r1, {path : 'mensajes.destinatario'}, function (err, r2){
+								Usuario.populate(r1, {path : 'mensajes.destinatario'},  (err, r2) => {
 									if (err) {
 										console.log("Error populate destinatario: "+err);
 									}else{
@@ -139,13 +140,13 @@ exports.enviar_mensaje = function(req, res, next){
 		});
 	}else if(req.body.tipo == "general"){
 		Chat.findOne({tipo : "general"})
-		.exec(function (err,chat){
+		.exec((err,chat) => {
 			if (!err) {
 				var datos = {remitente : req.body.remitente, destinatario : req.body.destinatario, contenido : req.body.contenido};
 				chat.mensajes.push(datos);
-				chat.save(function (err, chat){
+				chat.save((err, chat) => {
 					if (!err) {
-						Chat.populate(chat, {path : 'remitente', model : 'Usuario'}, function (err, chat){
+						Chat.populate(chat, {path : 'remitente', model : 'Usuario'},  (err, chat) => {
 							res.send(chat);
 						});
 					};
@@ -155,10 +156,11 @@ exports.enviar_mensaje = function(req, res, next){
 	}
 };
 
-exports.get_mensajes_generales = function(req, res, next){
+// Obtener los mensajes generales
+exports.get_mensajes_generales = (req, res, next) => {
 	Chat.find({tipo : 'general'})
 	.populate('remitente')
-	.exec(function (err, chat){
+	.exec((err, chat) => {
 		if (!err) {
 			//console.log("General:",mensajes);
 			res.send(chat);
@@ -168,7 +170,8 @@ exports.get_mensajes_generales = function(req, res, next){
 	});
 };
 
-exports.get_mensajes_individuales = function(req, res, next){
+// Obtener los mensajes individuales
+exports.get_mensajes_individuales = (req, res, next) => {
 	//Chat.findOne({ $and : [{ $or : [{ destinatario : req.params.destinatario }, { remitente : req.params.destinatario }] }, {tipo : 'individual'} ] })
 	//Chat.findOne({$or : [{ destinatario : req.session.passport.user._id },{ remitente : req.session.passport.user._id } ] })
 	Chat.findOne({ _id : req.params.id_chat})
@@ -189,7 +192,7 @@ exports.get_mensajes_individuales = function(req, res, next){
 
 
 //////////////////////***Funciones***////////////////////////////
-
+// Detectar quien fue el que envio el mensaje para mostrar el nombre
 function whoIsMe(usuario, chat){
 	var data = {chat : chat, yo : {}, otro : {}};
 	if (chat.destinatario._id == usuario._id) {

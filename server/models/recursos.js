@@ -1,7 +1,7 @@
-var models = require('./models'),
+const models = require('./models'),
 	Schema = models.Schema;
 
-var recursosSchema = new Schema({
+let recursosSchema = new Schema({
 	archivos : [{type: String}],
 	remitente : {type : Schema.Types.ObjectId, ref : 'Usuario'},
 	destinatarios : [{type: String}],
@@ -9,6 +9,6 @@ var recursosSchema = new Schema({
 	asunto : String
 });
 
-var Recursos = models.model('Recurso', recursosSchema, 'recursos');
+let Recursos = models.model('Recurso', recursosSchema, 'recursos');
 
 module.exports = Recursos;

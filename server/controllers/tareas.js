@@ -1,8 +1,10 @@
-var Tareas = require('../models/tareas');
-var ObjectId = require('mongoose').Types.ObjectId;
-var _ = require('lodash');
+// Requerir el modelo de los recursos y ObjectId para referencia de otro Schema por medio del id
+const Tareas = require('../models/tareas');
+const ObjectId = require('mongoose').Types.ObjectId;
+//Requerir modulos necesarios para trabajar
+const _ = require('lodash');
 
-exports.guardar = function(req, res, next){
+exports.guardar = (req, res, next) => {
 
 	//req.body.usuario = ObjectId(req.body.usuario);
 	var tareas = new Tareas({
@@ -10,7 +12,7 @@ exports.guardar = function(req, res, next){
 		usuario : req.session.passport.user._id.toString()
 	});
 
-	tareas.save(function (err, tarea){
+	tareas.save((err, tarea) => {
 		if (err) {
 			console.log("err: "+err);
 			res.send({success : false, message : err});
@@ -47,7 +49,7 @@ exports.guardarFinalizadas = function(req, res, next){
 				tarea.finalizada.fecha = new Date();
 				tarea.save();
 			});
-			
+
 			req.body.tareas = tareas;
 			//res.send(tareas);
 			next();

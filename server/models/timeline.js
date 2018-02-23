@@ -1,7 +1,7 @@
-var models = require('./models'),
+const models = require('./models'),
 	Schema = models.Schema;
 
-var timelineSchema = new Schema({
+let timelineSchema = new Schema({
 	usuario : {type : Schema.Types.ObjectId, ref : 'Usuario'},
 	tarea : {type : Schema.Types.ObjectId, ref : 'Tarea'},
 	recurso : {type : Schema.Types.ObjectId, ref : 'Recurso'},
@@ -11,6 +11,6 @@ var timelineSchema = new Schema({
 	descripcion : String
 });
 
-var Timeline = models.model('Timeline', timelineSchema);
+let Timeline = models.model('Timeline', timelineSchema);
 
 module.exports = Timeline;

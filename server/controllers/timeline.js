@@ -1,14 +1,17 @@
-var Timeline = require('../models/timeline');
-var Tareas = require('../models/tareas');
+// Requerir el modelo de los recursos y ObjectId para referencia de otro Schema por medio del id
+const Timeline = require('../models/timeline');
+const Tareas = require('../models/tareas');
+const ObjectId = require('mongoose').Types.ObjectId;
+// Requerir los modulos necesarios para trabajar
+const _ = require('lodash');
+const async = require('async');
 
-var ObjectId = require('mongoose').Types.ObjectId;
-var _ = require('lodash');
-var async = require('async');
 
-exports.tareaFinalizada = function(req, res, next){
+// Detectar las tareas finalizadas y guardarlas para incluirlas en el timeline
+exports.tareaFinalizada = (req, res, next) => {
 
-	var items = function(tarea, callback){
-		var timeline = new Timeline({
+	var items = (tarea, callback) => {
+		let timeline = new Timeline({
 			usuario :  ObjectId(tarea.usuario.toString()),
 			tarea :  ObjectId(tarea._id.toString()),
 			accion : 'finalizó una tarea',
@@ -16,7 +19,7 @@ exports.tareaFinalizada = function(req, res, next){
 			tipo : 'tarea'
 		});
 
-		timeline.save(function(err, item){
+		timeline.save((err, item) => {
 			if (!err) {
 				console.log("Acción guardada");
 				//console.log(item);
@@ -24,15 +27,15 @@ exports.tareaFinalizada = function(req, res, next){
 			}
 		});
 	}
-	async.map(req.body.tareas, items, function(err, result){
+	async.map(req.body.tareas, items, (err, result) => {
 		async.waterfall([
 			function(callback){
-				Timeline.populate(result, {path : 'usuario', model : 'Usuario'}, function(err, items){
+				Timeline.populate(result, {path : 'usuario', model : 'Usuario'}, (err, items) => {
 					callback(null, items);
 				});
 			},
 			function(items, callback){
-				Timeline.populate(items, {path : 'tarea', model : 'Tarea'}, function(err, items){
+				Timeline.populate(items, {path : 'tarea', model : 'Tarea'}, (err, items) => {
 					callback(null, items);
 				});
 			}
@@ -45,11 +48,12 @@ exports.tareaFinalizada = function(req, res, next){
 				console.log(err);
 			}
 		});
-		
+
 	});
 };
 
-exports.recursoEnviado = function(req, res, next){
+// Guardar el recurso enviado para ponerlo en el dashboard
+exports.recursoEnviado = (req, res, next) => {
 	var timeline = new Timeline({
 		recurso : req.body.recurso._id,
 		accion : 'compartió un recurso',
@@ -57,17 +61,18 @@ exports.recursoEnviado = function(req, res, next){
 		tipo : 'recurso'
 	});
 
-	timeline.save(function (err, recurso){
+	timeline.save((err, recurso) => {
 		if (!err) {
 			console.log("Acción guardada");
 			console.log("recurso");
 		}
 
 	});
-	
+
 };
 
-exports.getTimeline = function(req, res, next){
+//Obtener toda la informacion del timeline y ponerle la fecha de hoy
+exports.getTimeline = (req, res, next) => {
 	var d = new Date();
 	var anio = d.getFullYear();
 	var mes = d.getMonth();
@@ -78,7 +83,7 @@ exports.getTimeline = function(req, res, next){
 	.populate('usuario tarea recurso')
 	.exec(function (err, docs){
 		if (!err) {
-			Timeline.populate(docs, {path : 'recurso.remitente', model : 'Usuario'}, function(err, items){
+			Timeline.populate(docs, {path : 'recurso.remitente', model : 'Usuario'}, (err, items) => {
 				res.send(items);
 			});
 		}else{

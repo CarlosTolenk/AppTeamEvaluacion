@@ -1,17 +1,17 @@
-var passport = require('passport'),
+const passport = require('passport'),
 	LocalStrategy = require('passport-local').Strategy,
 	TwitterStrategy = require('passport-twitter').Strategy;
-var Usuario = require('../models/usuarios');
+const Usuario = require('../models/usuarios');
 
-passport.serializeUser(function (user, done){
+passport.serializeUser((user, done) => {
 	if (user) {
 		done(null, user);
 	}
 });
 
-passport.deserializeUser(function (user, done){
+passport.deserializeUser((user, done) => {
 	Usuario.findOne({_id : user._id})
-	.exec(function (err, user){
+	.exec((err, user) => {
 		if(user) {
           return done(null, user);
         } else {
@@ -20,10 +20,11 @@ passport.deserializeUser(function (user, done){
 	});
 });
 
+//Revisando si existe el usuario y autenticando el password
 passport.use('local',new LocalStrategy(
-	function(username, password, done){
+	(username, password, done) => {
 		Usuario.findOne({nombre_usuario : username})
-		.exec(function (err, user){
+		.exec((err, user) => {
 			if (user && user.authenticate(password)) {
 				return done(null, user)
 			}else{

@@ -1,7 +1,7 @@
-var models = require('./models'),
+const models = require('./models'),
 	Schema = models.Schema;
 
-var usuariosSchema = new Schema({
+let usuariosSchema = new Schema({
 	nombre : String,
 	nombre_usuario : String,
 	password : String,
@@ -15,6 +15,6 @@ usuariosSchema.methods = {
 }
 
 
-var Usuario = models.model('Usuario', usuariosSchema, 'usuarios');
+let Usuario = models.model('Usuario', usuariosSchema, 'usuarios');
 
 module.exports = Usuario;

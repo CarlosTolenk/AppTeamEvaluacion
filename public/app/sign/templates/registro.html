@@ -1,5 +1,5 @@
 <div class="form-box" id="login-box">
-    <div class="header">Registro de usuarios</div>
+    <div class="header bg-primary">Registro de usuarios</div>
     <form ng-submit="register()">
         <div class="body bg-gray">
             <div class="form-group">
@@ -13,7 +13,8 @@
             </div>
         </div>
         <div class="footer">
-            <button type="submit" ng-disabled="enviando" class="btn bg-olive btn-block">Registrar</button>
+            <button type="submit" ng-disabled="enviando" class="btn bg-primary btn-block">Registrar</button>
+            <p>Si ya tienes tu cuenta, dirigete al  <a ui-sref="login" class="text-center">Login</a></p>
         </div>
     </form>
 </div>

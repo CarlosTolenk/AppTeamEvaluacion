@@ -1,7 +1,7 @@
-var models = require('./models'),
+const models = require('./models'),
 	Schema = models.Schema;
 
-var tareasSchema = new Schema({
+let tareasSchema = new Schema({
 	descripcion : String,
 	usuario : {type : Schema.Types.ObjectId, ref : 'Usuario'},
 	finalizada : {
@@ -10,6 +10,6 @@ var tareasSchema = new Schema({
 	}
 });
 
-var Tareas = models.model('Tarea', tareasSchema, 'tareas');
+let Tareas = models.model('Tarea', tareasSchema, 'tareas');
 
 module.exports = Tareas;

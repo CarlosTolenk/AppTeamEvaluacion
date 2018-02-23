@@ -1,10 +1,12 @@
-var usuarios = require('../controllers/usuarios');	
-var tareas = require('../controllers/tareas');
-var recursos = require('../controllers/recursos');
-var timeline = require('../controllers/timeline');
-var chat = require('../controllers/chat');
-var passport = require('./passport');
-var multiparty = require('connect-multiparty')();
+//Requiriendo los controlladores de los modulos para las rutas
+const usuarios = require('../controllers/usuarios');
+const tareas = require('../controllers/tareas');
+const recursos = require('../controllers/recursos');
+const timeline = require('../controllers/timeline');
+const chat = require('../controllers/chat');
+//Requiriendo passport para las rutas de login y multiparty para subida de archivos como recursos
+const passport = require('./passport');
+const multiparty = require('connect-multiparty')();
 
 module.exports = function(app){
 
@@ -41,7 +43,7 @@ module.exports = function(app){
 	app.get('/recurso/:id_recurso', recursos.getDetalleRecurso);
 
 	app.get('/timeline', timeline.getTimeline);
-	
+
 	app.post('/mensaje', chat.enviar_mensaje);
 
 	app.get('/mensajes/general', chat.get_mensajes_generales);

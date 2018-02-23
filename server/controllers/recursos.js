@@ -1,20 +1,23 @@
-var Recurso = require('../models/recursos');
-var ObjectId = require('mongoose').Types.ObjectId;
+// Requerir el modelo de los recursos y ObjectId para referencia de otro Schema por medio del id
+const Recurso = require('../models/recursos');
+const ObjectId = require('mongoose').Types.ObjectId;
+//Modulos necesario para el funcionamiento
+const fs = require('fs');
+const _ = require('lodash');
+const path = require('path');
+const async = require('async');
 
-var fs = require('fs');
-var _ = require('lodash');
-var path = require('path');
-var async = require('async');
+let newRecurso = new Recurso({});
 
-var newRecurso = new Recurso({});
 
-exports.guardarRecurso = function(req, res, next){
+// Guardar los recursos que se han enviado
+exports.guardarRecurso = (req, res, next) => {
 	async.series({
 		archivos : function(callback){
 			if (req.files.hasOwnProperty('files')) {
-				console.log(req.files);	
+				console.log(req.files);
 				if (req.files.file.length > 0) {
-					var result = _.map(req.files.file, function(file, i){
+					let result = _.map(req.files.file, (file, i) => {
 						return guardar_archivos(req, res, i, file);;
 					});
 					callback(null, result);
@@ -30,29 +33,30 @@ exports.guardarRecurso = function(req, res, next){
 			callback(null, data);
 		}
 	}, function (err, result){
-		
+
 		if (!err) {
-			guardar_recurso(result, function(recurso){
-				
+			guardar_recurso(result, (recurso) => {
+				//Poblar todos los datos del usuarios, quien recibí, envía y los datos del recurso
 				Recurso.populate(recurso, {path : 'remitente', model : 'Usuario', select : 'nombre nombre_usuario'}, function(err, recurso){
 					req.body.recurso = recurso;
 					res.send(recurso);
 					next();
 				});
-				
+
 			});
 		}else{
 			res.send({msj : "Falló"});
 			console.log(err);
 		}
-		
+
 	});
 };
 
+//Obtener los datos del recurso recibido
 exports.getRecursosRecibidos = function(req, res, next){
 	Recurso.find({destinatarios : req.session.passport.user.nombre_usuario})
 	.populate('remitente')
-	.exec(function (err, recursos){
+	.exec((err, recursos) => {
 		if (err) {
 			console.log(err);
 		}else{
@@ -62,6 +66,7 @@ exports.getRecursosRecibidos = function(req, res, next){
 	});
 };
 
+// obtener informacion de los recursos enviados
 exports.getRecursosEnviados = function(req, res, next){
 	Recurso.find({remitente : req.session.passport.user._id})
 	.populate('remitente')
@@ -75,7 +80,7 @@ exports.getRecursosEnviados = function(req, res, next){
 	});
 };
 
-
+// Obtener los detalles del recurso que ha sido enviado correctamente
 exports.getDetalleRecurso = function(req, res, next){
 	console.log(req.params.id_recurso, "Detalle");
 	Recurso.findOne({_id : req.params.id_recurso})
@@ -93,7 +98,7 @@ exports.getDetalleRecurso = function(req, res, next){
 /////////**********Funciones**********//////////////
 
 
-
+// Lee el archivo que se ha subido y lo guarda en la carpeta /public/recursos/
 function guardar_archivos(req, res, i, file){
 	var root = path.dirname(require.main.filename);
 	var originalFilename = file.originalFilename.split('.')
@@ -106,16 +111,16 @@ function guardar_archivos(req, res, i, file){
 	var bytes_subidos = 0;
 
 	oldFile.pipe(newFile);
-
+// Activando la transferencia de informacion del archivo a la carpeta destino que sera quien contenga el archivo
 	oldFile.on('data', function (chunk){
-		
+
 		bytes_subidos += chunk.length;
 		var progreso = (bytes_subidos / bytes_totales) * 100;
 		//console.log("progress: "+parseInt(progreso, 10) + '%\n');
 		res.write("progress: "+parseInt(progreso, 10) + '%\n');
-		
-	});
 
+	});
+// Cerrar la conexion
 	oldFile.on('end', function(){
 		console.log('Carga completa!');
 		res.end('Carga completa!');
@@ -124,6 +129,7 @@ function guardar_archivos(req, res, i, file){
 	return nombre_archivo;
 }
 
+// Guardar el recurso
 function guardar_recurso(result, callback){
 	if (Array.isArray(result.archivos)) {
 		newRecurso.archivos = result.archivos;

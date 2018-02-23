@@ -1,32 +1,35 @@
-var _ = require('lodash');
-var usuarios = [];
+const _ = require('lodash');
+let usuarios = [];
 
 
-module.exports = function(server){
+module.exports = (server) => {
 	var io = require('socket.io')(server);
 
-	io.on('connection', function(socket){
+	// Crear la conexion con el cliente
+	io.on('connection', (socket) => {
 
-		socket.on('nueva:tarea',function(data){
+		//Agregar una nueva tarea al timeline
+		socket.on('nueva:tarea', (data) => {
 			io.emit('nueva:accion', data);
 		});
 
-		socket.on('nuevo:recurso', function(data){
+		// Agregar un nuevo recurso al timeline
+		socket.on('nuevo:recurso', (data) => {
 			io.emit('nueva:accion', [data]);
 		});
 
-		socket.on('disconnect', function(){
-		    var list = _.reject(usuarios, function(user){
-		    	
+		// Quitar de la lista el usuario que se desconecto
+		socket.on('disconnect', () => {
+		    var list = _.reject(usuarios, (user) => {
 		    	return user.socket === socket.id;
-		    	
 		    });
 		    socket.emit('usuarios:lista', usuarios);
 		});
 
-		socket.on('nuevo:usuario',function(data){
-			
-			var index = _.findIndex(usuarios, {_id : data.user._id});			
+		// Detectar un nuevo usuario y se agrega a la lista de conectados
+		socket.on('nuevo:usuario',(data) => {
+
+			var index = _.findIndex(usuarios, {_id : data.user._id});
 			if (index > -1) {
 				usuarios[index].socket = socket.id;
 			}else{
@@ -34,25 +37,26 @@ module.exports = function(server){
 			}
 			console.log(usuarios);
 			socket.broadcast.emit('usuarios:lista', usuarios);
-			
+
 		});
 
-		socket.on('nuevo:mensaje:general', function(mensaje){
+   // Mensaje general, me llega desde el cliente y lo envio
+		socket.on('nuevo:mensaje:general', (mensaje) => {
 			io.emit('mensaje:general', mensaje);
 		});
 
-		socket.on('nuevo:mensaje:individual', function(mensaje){
+		// Mensaje individuales, me llega la informacion del cliente y la envio
+		socket.on('nuevo:mensaje:individual', (mensaje) => {
 			var index = _.findIndex(usuarios, {_id : mensaje.destinatario._id});
 			if (index > -1) {
   				socket.broadcast.in(usuarios[index].socket).emit('mensaje:individual', mensaje);
 			}
 		});
 
-		socket.on('usuarios', function(data){
+		// Agregando el usuario a lista por medio de socket( ira al socket client para procesar la informacion)
+		socket.on('usuarios', (data) => {
 			socket.emit('usuarios:lista', usuarios);
 		});
-
 	});
 
-	
 };
