@@ -5,7 +5,7 @@ app.controller('recursosCtrl', function($scope, $http, $state, RecursosService, 
         $scope.files = elm.files;
 		$scope.$apply();
 	}
-   
+
 	$scope.uploadFile = function(){
         var fd = new FormData();
         angular.forEach($scope.files, function (file){
@@ -13,17 +13,17 @@ app.controller('recursosCtrl', function($scope, $http, $state, RecursosService, 
         });
         fd.append('destinatarios',$scope.destinatarios);
         fd.append('asunto',$scope.asunto);
-        
-        $http.post('/recurso', fd, 
+
+        $http.post('/recurso', fd,
         {
             transformRequest:angular.identity,
-            headers : {'Content-Type' : undefined}
+            headers : { 'Content-Type' : undefined }
         })
         .success(function (response){
             Socket.emit('nuevo:recurso', response);
-            ToastService.success('Enviado correctamente!');
+						console.log("Se ha enviado");
+            //ToastService.success('Enviado correctamente!');
             //$state.transitionTo('app.recursos');
-
         });
     };
 
@@ -52,7 +52,7 @@ app.controller('recibidosCtrl', function($scope,RecursosService){
 
 
 app.controller('detalleCtrl', function($scope, $stateParams, RecursosService){
-    
+
     if ($stateParams.hasOwnProperty('id_recurso')) {
         var id_recurso = $stateParams.id_recurso;
         RecursosService.getDetalle({id : id_recurso})

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html ng-app="Teamapp">
+    <head>
+        <base href="/">
+        <!--Cambió y se agregó nuevo-->
+        <meta charset="UTF-8">
+<title>Team App |  </title>
+<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<link href="//code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+<link href="/vendor/angular-toastr/dist/angular-toastr.css" rel="stylesheet" type="text/css" />
+<link href="/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+
+        
+    </head>
+    <body class="skin-blue" >
+
+        
+    <div id="wrap" ui-view> </div>
+
+        
+        <!--Cambió y se agregó nuevo-->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/vendor/angular/angular.js"></script>
+<script type="text/javascript" src="/vendor/angular-ui-router/release/angular-ui-router.js"></script>
+<script type="text/javascript" src="/vendor/angular-animate/angular-animate.js"></script>
+<script type="text/javascript" src="/vendor/angular-toastr/dist/angular-toastr.js"></script>
+<script type="text/javascript" src="/vendor/lodash/lodash.js"></script>
+<script type="text/javascript" src="/vendor/async/lib/async.js"></script>
+<script type="text/javascript" src="/vendor/angular-socket-io/socket.js"></script>
+
+<!-- Scripts Personal-->
+<script type="text/javascript" src="/js/toggle.js"></script>
+
+<!--Socket.IO-->
+<script src="/socket.io/socket.io.js"></script>
+<!--App Angular-->
+<script type="text/javascript" src="/app/app.js"></script>
+<!--Controllers Angular-->
+<script type="text/javascript" src="/app/index/controllers/indexCtrl.js"></script>
+<script type="text/javascript" src="/app/sign/controllers/registroCtrl.js"></script>
+<script type="text/javascript" src="/app/sign/controllers/loginCtrl.js"></script>
+<script type="text/javascript" src="/app/dashboard/controllers/dashboardCtrl.js"></script>
+<script type="text/javascript" src="/app/tareas/controllers/tareasCtrl.js"></script>
+<script type="text/javascript" src="/app/recursos/controllers/recursosCtrl.js"></script>
+<script type="text/javascript" src="/app/chat/controllers/chatCtrl.js"></script>
+<!--Services Angular-->
+<script type="text/javascript" src="/app/services/toastr.js"></script>
+<script type="text/javascript" src="/app/services/session.js"></script>
+<script type="text/javascript" src="/app/services/tareas.js"></script>
+<script type="text/javascript" src="/app/services/recursos.js"></script>
+<script type="text/javascript" src="/app/services/dashboard.js"></script>
+<script type="text/javascript" src="/app/services/chat.js"></script>
+<script type="text/javascript" src="/app/services/socket.js"></script>
+
+<!--Directives Angular-->
+<script type="text/javascript" src="/app/directives/files.js"></script>
+
+    </body>
+</html>

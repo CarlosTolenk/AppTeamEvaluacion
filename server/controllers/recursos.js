@@ -117,7 +117,7 @@ function guardar_archivos(req, res, i, file){
 
 		bytes_subidos += chunk.length;
 		var progreso = (bytes_subidos / bytes_totales) * 100;
-		//console.log("progress: "+parseInt(progreso, 10) + '%\n');
+		console.log("progress: "+parseInt(progreso, 10) + '%\n');
 		res.write("progress: "+parseInt(progreso, 10) + '%\n');
 
 	});
