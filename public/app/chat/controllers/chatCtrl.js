@@ -9,7 +9,7 @@ app.controller('chatCtrl', function($scope, $stateParams, $state, $timeout, Sock
 	$scope.message = {};
 
 	//_.indexOf($scope.messageList,{chat_id : '' });
-	
+
 	$scope.chat = null;
 	$scope.messagesG = [];
 	$scope.messages = [];
@@ -32,13 +32,14 @@ app.controller('chatCtrl', function($scope, $stateParams, $state, $timeout, Sock
 		$scope.getTipoChat(function(tipo){
 			$scope.chat = tipo;
 			if (typeof callback == "function") {
-				callback($scope.chat);	
+				callback($scope.chat);
 			}
 		});
 	};
 
 	$scope.enviarMensajeGeneral = function(){
 		var data = {};
+		var fecha = new Date();
 		data = {contenido : $scope.mensaje, tipo : 'general'};
 		ChatService.enviarMensaje(data)
 		.then(function(response){
@@ -46,7 +47,6 @@ app.controller('chatCtrl', function($scope, $stateParams, $state, $timeout, Sock
 			Socket.emit('nuevo:mensaje:general', data);
 			$scope.mensaje="";
 		});
-		
 	}
 
 	$scope.enviarMensajeIndividual = function(){
@@ -64,7 +64,7 @@ app.controller('chatCtrl', function($scope, $stateParams, $state, $timeout, Sock
 		}).error(function(response){
 			console.error(response);
 		});
-		
+
 	}
 
 	$scope.goToChat = function(destino){
@@ -94,7 +94,7 @@ app.controller('chatCtrl', function($scope, $stateParams, $state, $timeout, Sock
 					$scope.messagesG = response[0].mensajes;
 					//console.log($scope.messagesG);
 				});
-				
+
 			}else{
 				//console.log("individual");
 				ChatService.getMensajesIndividuales({chat : $scope.chat})
@@ -109,9 +109,9 @@ app.controller('chatCtrl', function($scope, $stateParams, $state, $timeout, Sock
 		});
 	}();
 
-	
 
-	
+
+
 	$scope.setChat = function(mensaje){
 		if ($scope.messagesList) {
 			if (mensaje.chat && $scope.chat) {
@@ -148,7 +148,7 @@ app.controller('chatCtrl', function($scope, $stateParams, $state, $timeout, Sock
 		}
 	});
 
-	
+
 	Socket.on('mensaje:individual', function(mensaje){
 		$scope.setChat(mensaje);
 	});

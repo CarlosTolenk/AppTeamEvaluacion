@@ -14,7 +14,8 @@ let newRecurso = new Recurso({});
 exports.guardarRecurso = (req, res, next) => {
 	async.series({
 		archivos : function(callback){
-			if (req.files.hasOwnProperty('files')) {
+			if (req.files.hasOwnProperty('file')) {
+				console.log("Esta es la informacion muestrada");
 				console.log(req.files);
 				if (req.files.file.length > 0) {
 					let result = _.map(req.files.file, (file, i) => {

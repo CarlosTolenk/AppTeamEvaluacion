@@ -21,13 +21,13 @@ angular.module('Teamapp').factory('Socket', function($rootScope, Session) {
       socket.emit('nuevo:usuario', user);
     });
   });
-  
+
   return {
     init : function(){
       socket.removeAllListeners();
     },
     on: function (eventName, callback) {
-      socket.on(eventName, function () {  
+      socket.on(eventName, function () {
         var args = arguments;
         $rootScope.$apply(function () {
           callback.apply(socket, args);

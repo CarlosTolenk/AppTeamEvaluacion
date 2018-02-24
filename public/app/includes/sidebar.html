@@ -1,6 +1,26 @@
- <section class="sidebar">
+<style media="screen">
+  .logo-footer{
+    width:90%;
+    margin-left: 5px;
+    height:auto;
+    /*background-color:black; */
+    bottom:60px;
+    left: 0px;
+    position:absolute;
+  }
 
-    <div class="user-panel">
+  #wrapper.active {
+    padding-left: 150px;
+}
+#wrapper.active #sidebar-wrapper {
+    left: 150px;
+    width: 150px;
+    transition: all .4s ease 0s;
+}
+</style>
+
+ <section class="sidebar">
+    <div class="user-panel" id="wrapper">
         <div class="pull-left image">
             <img src="/img/avatar3.png" class="img-circle" alt="User Image" />
         </div>
@@ -10,27 +30,32 @@
             <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
     </div>
-    
+
     <ul class="sidebar-menu">
-        <li class="">
-            <a ui-sref="app.dashboard">
-                <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+        <li class="nav-item">
+            <a ui-sref="app.dashboard" class="nav-link">
+                <i class="fa fa-dashboard text-primary"></i> <span>Dashboard</span>
             </a>
         </li>
-        <li class="">
-            <a ui-sref="app.chat">
-                <i class="fa fa-comment"></i> <span>Chat</span>
+        <li class="nav-item">
+            <a ui-sref="app.chat" class="nav-link">
+                <i class="fa fa-comment text-danger"></i> <span>Chat</span>
             </a>
         </li>
-        <li class="">
+        <li class="nav-item" class="nav-link">
             <a ui-sref="app.tareas">
-                <i class="fa fa-check"></i> <span>Tareas</span>
+                <i class="fa fa-check text-success"></i> <span>Tareas</span>
             </a>
         </li>
-        <li class="">
-            <a ui-sref="app.recursos">
-                <i class="fa fa-envelope"></i> <span>Recursos</span>
+        <li class="nav-item">
+            <a ui-sref="app.recursos" class="nav-link">
+                <i class="fa fa-envelope text-info"></i> <span>Recursos</span>
             </a>
         </li>
     </ul>
 </section>
+
+<footer class="logo-footer">
+  <a href="https://www.linkedin.com/in/ctolenk/" target="_blank"> <img src="/img/ctolenk-footer.png" alt="">  </a>
+
+</footer>
